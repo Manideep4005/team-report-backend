@@ -22,3 +22,19 @@ export function getISTTodayRange() {
         end: endUTC,
     };
 }
+
+
+export function getISTRange(date: string) {
+    const [year, month, day] = date.split("-").map(Number);
+
+    // IST midnight
+    const startIST = new Date(year, month - 1, day);
+
+    // Convert IST -> UTC
+    const start = new Date(startIST.getTime() - 5.5 * 60 * 60 * 1000);
+
+    const end = new Date(start);
+    end.setUTCDate(end.getUTCDate() + 1);
+
+    return { start, end };
+}

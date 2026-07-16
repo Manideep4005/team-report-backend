@@ -2,7 +2,7 @@ import type { VercelResponse } from "@vercel/node";
 import prisma from "../../lib/prisma";
 import { authenticate, AuthRequest } from "../../middleware/auth";
 import { cors } from "../../lib/cors";
-import { getISTTodayRange } from "../../lib/date";
+import { getISTRange } from "../../lib/date";
 
 export default async function handler(
   req: AuthRequest,
@@ -28,8 +28,7 @@ export default async function handler(
     };
 
     if (date) {
-
-      const { start, end } = getISTTodayRange();
+      const { start, end } = getISTRange(date);
 
       where.reportDate = {
         gte: start,
