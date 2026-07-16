@@ -2,6 +2,7 @@ import type { VercelResponse } from "@vercel/node";
 import prisma from "../../lib/prisma";
 import { authenticate, AuthRequest } from "../../middleware/auth";
 import { cors } from "../../lib/cors";
+import { getISTTodayRange } from "../../lib/date";
 
 export default async function handler(
     req: AuthRequest,
@@ -16,11 +17,7 @@ export default async function handler(
     if (!authenticate(req, res))
         return;
 
-    const start = new Date();
-    start.setHours(0, 0, 0, 0);
-
-    const end = new Date(start);
-    end.setDate(end.getDate() + 1);
+    const { start, end } = getISTTodayRange();
 
     const users = await prisma.user.findMany({
         orderBy: {
