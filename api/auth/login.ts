@@ -3,6 +3,7 @@ import prisma from "../../lib/prisma";
 import bcrypt from "bcryptjs";
 
 import { generateToken } from "../../lib/jwt";
+import { cors } from "../../lib/cors";
 
 export default async function handler(
 
@@ -11,6 +12,7 @@ export default async function handler(
     res: any
 
 ) {
+    if (cors(req, res)) return;
 
     if (req.method !== "POST") {
 
@@ -61,11 +63,8 @@ export default async function handler(
     const token = generateToken(user.id);
 
     res.setHeader(
-
         "Set-Cookie",
-
-        `token=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=604800`
-
+        `token=${token}; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=604800`
     );
 
     return res.json({

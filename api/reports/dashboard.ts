@@ -1,11 +1,13 @@
 import type { VercelResponse } from "@vercel/node";
 import prisma from "../../lib/prisma";
 import { authenticate, AuthRequest } from "../../middleware/auth";
+import { cors } from "../../lib/cors";
 
 export default async function handler(
   req: AuthRequest,
   res: VercelResponse
 ) {
+  if (cors(req, res)) return;
   if (req.method !== "GET") {
     return res.status(405).json({
       success: false,
