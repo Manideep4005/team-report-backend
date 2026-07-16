@@ -26,42 +26,36 @@ export default async function handler(
 
     } = req.body;
 
+
+
     const user = await prisma.user.findUnique({
-
         where: {
-
             email,
-
         },
-
     });
 
+    console.log("Email:", email);
+    console.log("User Found:", !!user);
+
     if (!user) {
-
         return res.status(401).json({
-
             success: false,
-
+            message: "User not found",
         });
-
     }
 
     const ok = await bcrypt.compare(
-
         password,
-
         user.password
-
     );
 
+    console.log("Password Match:", ok);
+
     if (!ok) {
-
         return res.status(401).json({
-
             success: false,
-
+            message: "Invalid password",
         });
-
     }
 
     const token = generateToken(user.id);
