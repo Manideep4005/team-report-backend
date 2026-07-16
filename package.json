@@ -7,8 +7,7 @@
     "lib": "lib"
   },
   "scripts": {
-    "build": "prisma generate",
-    "start": "node"
+    "postinstall": "prisma generate"
   },
   "keywords": [],
   "author": "",
